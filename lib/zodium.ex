@@ -90,7 +90,7 @@ defmodule Zodium do
     if (err == 0) {
       return beam.make(.{.ok, plaintext}, .{});
     } else {
-      return beam.make_error_pair(.@"failed_verification", .{});
+      return beam.make_error_pair(.failed_verification, .{});
     }
   }
 
@@ -118,7 +118,7 @@ defmodule Zodium do
     if (err == 0) {
       return beam.make(.{.ok, plaintext}, .{});
     } else {
-      return beam.make_error_pair(.@"failed_verification", .{});
+      return beam.make_error_pair(.failed_verification, .{});
     }
   }
   """
