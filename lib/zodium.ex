@@ -36,6 +36,7 @@ defmodule Zodium do
   const MAC_BYTES = sodium.crypto_box_MACBYTES;
   const NONCE_BYTES = sodium.crypto_box_NONCEBYTES;
   const PUBLIC_KEY_BYTES = sodium.crypto_box_PUBLICKEYBYTES;
+  const SEAL_BYTES = sodium.crypto_box_SEALBYTES;
   const SECRET_KEY_BYTES = sodium.crypto_box_SECRETKEYBYTES;
 
   pub const Keypair = struct {
@@ -70,6 +71,32 @@ defmodule Zodium do
     defer beam.allocator.free(plaintext);
 
     const err = sodium.crypto_box_open_easy(plaintext.ptr, ciphertext.ptr, ciphertext.len, &nonce, &pk, &sk);
+
+    if (err == 0) {
+      return beam.make(.{.ok, plaintext}, .{});
+    } else {
+      return beam.make_error_pair(.@"failed_verification", .{});
+    }
+  }
+
+  pub fn box_seal(msg: []u8, pk: [PUBLIC_KEY_BYTES]u8) !beam.term {
+    const ciphertext = try beam.allocator.alloc(u8, msg.len + SEAL_BYTES);
+    defer beam.allocator.free(ciphertext);
+
+    _ = sodium.crypto_box_seal(ciphertext.ptr, msg.ptr, msg.len, &pk);
+
+    return beam.make(ciphertext, .{});
+  }
+
+  pub fn box_seal_open(ciphertext: []u8, pk: [PUBLIC_KEY_BYTES]u8, sk: [SECRET_KEY_BYTES]u8) !beam.term {
+    if (ciphertext.len <= SEAL_BYTES) {
+      return beam.make_error_pair("Not sodium-encrypted", .{});
+    }
+
+    const plaintext = try beam.allocator.alloc(u8, ciphertext.len - SEAL_BYTES);
+    defer beam.allocator.free(plaintext);
+
+    const err = sodium.crypto_box_seal_open(plaintext.ptr, ciphertext.ptr, ciphertext.len, &pk, &sk);
 
     if (err == 0) {
       return beam.make(.{.ok, plaintext}, .{});
