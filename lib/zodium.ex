@@ -5,7 +5,10 @@ defmodule Zodium do
 
   use Zig,
     otp_app: :zigler,
-    c: [link_lib: {:system, "sodium"}]
+    c: [link_lib: {:system, "sodium"}],
+    callbacks: [:on_load]
+
+  defp __on_load__, do: nil
 
   ~Z"""
   const std = @import("std");
@@ -14,9 +17,13 @@ defmodule Zodium do
   const beam = @import("beam");
   const sodium = @cImport(@cInclude("sodium.h"));
 
-  pub fn randombytes(size: usize) !beam.term {
-    assert(sodium.sodium_init() != -1);
+  pub fn on_load(private: ?*?*u32, extra: beam.term) c_int {
+    _ = private;
+    _ = extra;
+    return sodium.sodium_init();
+  }
 
+  pub fn randombytes(size: usize) !beam.term {
     const buffer = try beam.allocator.alloc(u8, size);
     defer beam.allocator.free(buffer);
 
@@ -37,8 +44,6 @@ defmodule Zodium do
   };
 
   pub fn box_keypair() Keypair {
-    assert(sodium.sodium_init() != -1);
-
     var pair = Keypair{};
 
     _ = sodium.crypto_box_keypair(&pair.public, &pair.secret);
