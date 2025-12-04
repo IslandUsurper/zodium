@@ -1,8 +1,10 @@
 # Zodium
 
-**TODO: Add description**
+Zig-compiled libsodium bindings for Elixir.
 
 ## Installation
+
+Install [libsodium](https://doc.libsodium.org/doc) with your favorite package manager, with "-dev" if its repository splits source and executable packages.
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `zodium` to your list of dependencies in `mix.exs`:
