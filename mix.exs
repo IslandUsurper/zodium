@@ -10,6 +10,7 @@ defmodule Zodium.MixProject do
       source_url: "https://github.com/IslandUsurper/zodium",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      docs: &docs/0,
       package: package()
     ]
   end
@@ -24,7 +25,15 @@ defmodule Zodium.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false},
       {:zigler, "~> 0.15", runtime: false}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "Zodium",
+      extras: ["README.md"]
     ]
   end
 
