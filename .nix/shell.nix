@@ -8,12 +8,9 @@ pkgs.mkShell {
     elixir
     libsodium
     mix2nix
+    pkg-config
     zig
-  ] ++ lib.optional stdenv.isLinux inotify-tools
-  ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-    CoreFoundation
-    CoreServices
-  ]);
+  ] ++ lib.optional stdenv.isLinux inotify-tools;
 
   enterShell = ''
     # ERL_LIBS causes a load of compile warnings (warning: this clause cannot
