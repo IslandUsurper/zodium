@@ -39,7 +39,7 @@ defmodule Zodium.MixProject do
 
   defp package do
     [
-      files: ~w(lib .formatter.exs mix.exs README* LICENSE*),
+      files: ~w(lib .formatter.exs mix.exs priv README* LICENSE*),
       licenses: ["Apache-2.0"],
       links: %{"GitHub" => "https://github.com/IslandUsurper/zodium"},
       source_url: "https://github.com/IslandUsurper/zodium"
