@@ -19,6 +19,9 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 zodium-*.tar
 
+# And gzipped for GitHub.
+zodium-*.tar.gz
+
 # Temporary files, for example, from tests.
 /tmp/
 
