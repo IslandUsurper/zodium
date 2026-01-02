@@ -4,7 +4,7 @@ defmodule Zodium.MixProject do
   def project do
     [
       app: :zodium,
-      version: "0.1.0",
+      version: "1.0.0",
       elixir: "~> 1.18",
       description: "Zig-compiled libsodium bindings for Elixir",
       source_url: "https://github.com/IslandUsurper/zodium",
